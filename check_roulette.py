@@ -28,13 +28,13 @@ class Roulette:
 
 class Game:
 
-    def __init__(self, roulette, wallet, goal_amount, first_bet, verbose=False):
+    def __init__(self, roulette, wallet, goal_amount, first_bet,
+                 verbose=False):
         self.roulette = roulette
         self.wallet = wallet
         self.goal_amount = goal_amount
         self.first_bet = first_bet
         self.bet_colour = Colour.RED
-        # self.session_num = session_num
         self.verbose = verbose
 
     def play_once(self, bet_value):
@@ -45,20 +45,22 @@ class Game:
             self.wallet -= bet_value
         return result
 
-    def play_to_end(self):
+    def play_to_goal(self):
         n = 0
         bet = self.first_bet
         while True:
             n += 1
+            wallet_before = self.wallet
             result = self.play_once(bet)
-            print_verbose(f"n: {n}, wallet: {self.wallet}, bet: {bet}, win: {result}",
-                          verbose=self.verbose)
+            print_verbose(f"n: {n}, wallet: {wallet_before}, bet: {bet}, \
+won: {result}", verbose=self.verbose)
             if self.wallet == 0:
                 break
             if not result:
                 bet = bet * 2
             if self.wallet < bet:
-                print_verbose("It is not enough money to double the bet. Bet all the wallet money.",
+                print_verbose("It is not enough money to double the bet. \
+Bet the entire wallet.",
                               verbose=self.verbose)
                 bet = self.wallet
             if self.wallet >= self.goal_amount:
@@ -71,9 +73,8 @@ class Game:
         else:
             result = "You lost!"
         print_verbose("-"*40, verbose=self.verbose)
-        print_verbose(f"{result} wallet: {self.wallet}, spins: {spins}", verbose=self.verbose)
-
-    # def play_multisession(self):
+        print_verbose(f"{result} wallet: {self.wallet}, spins: {spins}",
+                      verbose=self.verbose)
 
 
 if __name__ == "__main__":
@@ -82,13 +83,22 @@ if __name__ == "__main__":
     wallet = 10
     first_bet = 1
     goal_amount = 45
-    verbose = True
+    session_num = 100
+    verbose = False
 
     roulette = Roulette()
-    game = Game(roulette=roulette,
-                wallet=wallet,
-                first_bet=first_bet,
-                goal_amount=goal_amount,
-                verbose=verbose
-                )
-    game.play_to_end()
+    session_result = 0
+    for _ in range(session_num):
+        game = Game(roulette=roulette,
+                    wallet=wallet,
+                    first_bet=first_bet,
+                    goal_amount=goal_amount,
+                    verbose=verbose,
+                    )
+        game.play_to_goal()
+        if game.wallet > 0:
+            session_result += 1
+    print("-"*40)
+    print("Result:")
+    print(f"Session number: {session_num}, won: {session_result}, \
+lost: {session_num - session_result}")
