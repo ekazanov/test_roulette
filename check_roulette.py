@@ -1,6 +1,7 @@
 __author__ = "Evgeny Kazanov"
 
 import random
+import argparse
 
 def print_verbose(string, verbose=False):
     if verbose:
@@ -78,8 +79,22 @@ Bet the entire wallet.",
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Roulette startegy testing program.')
+    parser.add_argument('--wallet', "-w", type=int, required=True,
+                        metavar='INTEGER', help="Wallet start amount")
+    parser.add_argument('--first_bet', "-f", type=int,  required=True,
+                        metavar='INTEGER', help="First bet value.")
+    parser.add_argument('--goal_amount', "-g", type=int, required=True,
+                        metavar='INTEGER', help="Give up when program \
+has got this amount in the wallet.")
+    parser.add_argument('--session_num', "-s", type=int,  required=True,
+                        metavar='INTEGER', help="Number of game sessions to \
+play. Int.")
+    parser.add_argument('--verbose', "-v", type=int, default=0, choices=[0, 1],
+                        metavar='INTEGER',  help="Verbosity level. 0/1")
+    
+    args = parser.parse_args()
 
-    bet_colour = Colour.RED
     wallet = 10
     first_bet = 1
     goal_amount = 45
@@ -88,17 +103,17 @@ if __name__ == "__main__":
 
     roulette = Roulette()
     session_result = 0
-    for _ in range(session_num):
+    for _ in range(args.session_num):
         game = Game(roulette=roulette,
-                    wallet=wallet,
-                    first_bet=first_bet,
-                    goal_amount=goal_amount,
-                    verbose=verbose,
+                    wallet=args.wallet,
+                    first_bet=args.first_bet,
+                    goal_amount=args.goal_amount,
+                    verbose=args.verbose,
                     )
         game.play_to_goal()
         if game.wallet > 0:
             session_result += 1
     print("-"*40)
     print("Result:")
-    print(f"Session number: {session_num}, won: {session_result}, \
-lost: {session_num - session_result}")
+    print(f"Session number: {args.session_num}, won: {session_result}, \
+lost: {args.session_num - session_result}")
