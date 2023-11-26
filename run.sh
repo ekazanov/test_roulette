@@ -1,7 +1,5 @@
 #! /usr/bin/bash
 
-source venv/bin/activate
-
 # Get help message
 # python3 check_roulette.py --help
 
