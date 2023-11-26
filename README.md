@@ -43,7 +43,7 @@ options:
 
 ## Usage examples ##
 
-Usage examples can be found in run.sh file.
+Usage examples can be found in the `run.sh` file.
 
 ## Dependencies ##
 
