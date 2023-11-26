@@ -19,7 +19,7 @@ cd test_roulette
 ```
 
 ## Usage ##
-
+```
 usage: check_roulette.py [-h] --wallet INTEGER --first_bet INTEGER
                          --goal_amount INTEGER --session_num INTEGER
                          [--verbose INTEGER]
@@ -39,6 +39,7 @@ options:
                         Number of game sessions to play. Int.
   --verbose INTEGER, -v INTEGER
                         Verbosity level. 0/1
+```
 
 ## Usage examples ##
 
